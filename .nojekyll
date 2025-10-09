@@ -1,0 +1,284 @@
+const SPREADSHEET_ID = "1oz7w1Zn8n5Z5s1RoEucuKuFEBiRKQ7cPmz9WcjnRGHA";
+const DRIVE_FOLDER_ID = "1To9B5f_6WH4pynezKSTtTqVwqA_Zdb5Q";
+
+const SHEETS_CONFIG = {
+  MIEMBRO_1: { fuente: 'planespro', nombreHoja: 'PlanesPro' },
+  MIEMBRO_2: { fuente: 'mpasesores', nombreHoja: 'MP Asesores' },
+  DEFAULT_SHEET: 'PlanesPro'
+};
+
+// --- ESTRUCTURA DE COLUMNAS ACTUALIZADA ---
+const COLUMN_HEADERS = [
+  'FechaEnvio','Estado','CTA','Campaña','Nombre','Rut','Email','Teléfono','Edad','Factor',
+  'Est. Civil','Comuna','Región','Sist. Salud','Isapre','Anualidad','Estatura','Peso',
+  'Cargas','Edad Cargas','Interés','Costo Plan','Evaluar AFP','AFP','Archivo PDF',
+  'Contacto WA','Estado WA'
+];
+
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('Acciones de Contacto')
+    .addItem('Preparar Mensaje de WhatsApp', 'prepararContactoWhatsApp')
+    .addToUi();
+}
+
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+
+  try {
+    // ====== MERGE DE ENTRADAS (FormData + JSON) ======
+    let data = {};
+    try {
+      const isJson = e.postData && e.postData.type && String(e.postData.type).indexOf('application/json') !== -1;
+      const body = isJson ? JSON.parse(e.postData.contents || '{}') : {};
+      data = Object.assign({}, e.parameter || {}, body || {});
+    } catch(parseErr) {
+      data = Object.assign({}, e.parameter || {});
+      Logger.log("⚠️ No se pudo parsear JSON del body: " + parseErr);
+    }
+    Logger.log("📥 Parámetros consolidados: " + JSON.stringify(data));
+
+    // ====== SELECCIÓN DE HOJA (prioriza sheetName) ======
+    const fuente = (data.fuente_cta || '').toLowerCase();
+    const target = (data.sheetName && String(data.sheetName).trim() !== '')
+      ? String(data.sheetName).trim()
+      : (fuente === SHEETS_CONFIG.MIEMBRO_1.fuente
+        ? SHEETS_CONFIG.MIEMBRO_1.nombreHoja
+        : fuente === SHEETS_CONFIG.MIEMBRO_2.fuente
+        ? SHEETS_CONFIG.MIEMBRO_2.nombreHoja
+        : SHEETS_CONFIG.DEFAULT_SHEET);
+    Logger.log("➡ Hoja destino: " + target);
+
+    // ====== OBTENER/CREAR HOJA ======
+    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    let sheet = ss.getSheetByName(target);
+    if (!sheet) {
+      sheet = ss.insertSheet(target);
+      sheet.getRange(1,1,1,COLUMN_HEADERS.length).setValues([COLUMN_HEADERS]);
+    }
+    if (sheet.getLastRow() === 0) sheet.appendRow(COLUMN_HEADERS);
+
+    // ====== PROCESO DE PDF (si viene) ======
+    let pdfUrl = '';
+    try {
+      const base64 = data.base64pdf || (e.parameter && e.parameter.base64pdf);
+      if (base64) {
+        const fechaActual = new Date();
+        const fechaFormateada = Utilities.formatDate(fechaActual, "America/Santiago", "yyyy-MM-dd_HHmm");
+        const nombreCliente = (data.nombre || 'SinNombre').replace(/\s+/g, '_');
+        const rutCliente = data.rut || 'SinRUT';
+        const nombreArchivo = `${fechaFormateada}_${nombreCliente}_${rutCliente}.pdf`;
+
+        const decoded = Utilities.base64Decode(base64);
+        const blob = Utilities.newBlob(decoded, MimeType.PDF, nombreArchivo);
+        const file = DriveApp.getFolderById(DRIVE_FOLDER_ID).createFile(blob);
+        const fileId = file.getId();
+        pdfUrl = `=HYPERLINK("https://drive.google.com/file/d/${fileId}/view", "${nombreArchivo}")`;
+        Logger.log("✅ PDF subido con éxito: " + fileId);
+      }
+    } catch (err) {
+      Logger.log("❌ Error al procesar archivo base64: " + err);
+    }
+
+    // ====== MAPEO A COLUMNAS ======
+    const row = COLUMN_HEADERS.map(h => {
+      switch (h) {
+        case 'FechaEnvio': return new Date();
+        case 'Estado': return data.status || 'Completado';
+        case 'CTA': return data.fuente_cta || '';
+        case 'Campaña': return data.campana || '';
+        case 'Nombre': return data.nombre || '';
+        case 'Rut': return data.rut || '';
+        case 'Email': return data.email || '';
+        case 'Teléfono': return data.telefono || '';
+        case 'Edad': return data.rango_edad || '';
+        case 'Factor': return data.factor || '';
+        case 'Est. Civil': return data.estado_civil || '';
+        case 'Comuna': return data.comuna || '';
+        case 'Región': return data.region || '';
+        case 'Sist. Salud': return data.sistema_actual || '';
+        case 'Isapre': return data.isapre_especifica || '';
+        case 'Anualidad': return data.anualidad_isapre || '';
+        case 'Estatura': return data.estatura || '';
+        case 'Peso': return data.peso || '';
+        case 'Cargas': return data.num_cargas || '';
+        case 'Edad Cargas': return data.edad_cargas || '';
+        case 'Interés': return data.interes || '';
+        case 'Costo Plan': return data.rango_costo || '';
+        case 'Evaluar AFP': return data.evaluar_afp || '';
+        case 'AFP': return data.afp_actual || '';
+        case 'Archivo PDF': return pdfUrl || '';
+        case 'Contacto WA': return '';
+        case 'Estado WA': return '';
+        default: return '';
+      }
+    });
+
+    // ====== ESCRIBIR FILA ======
+    sheet.appendRow(row);
+
+    const lastRow = sheet.getLastRow();
+    const telefono = data.telefono || '';
+    const nombre = data.nombre || '';
+    const comuna = data.comuna || '';
+    const region = data.region || '';
+    const sistema = data.sistema_actual || '';
+    const isapre = sistema === 'Isapre' ? ` (${data.isapre_especifica || ''})` : '';
+    const cargas = data.num_cargas > 0 ? `• Cargas: ${data.num_cargas}\n` : '';
+    const interes = data.interes || '';
+    const costo = data.rango_costo || '';
+    const afp = data.evaluar_afp === 'Si' ? `• Me interesa AFP\n• AFP Actual: ${data.afp_actual || ''}\n` : '';
+    const msg = `Hola, ${nombre}, te saludamos de PlanesPro:\n\n` +
+      `• Rut: ${data.rut || ''}\n` +
+      `• Teléfono: ${telefono}\n` +
+      `• Comuna: ${comuna}\n` +
+      `• Región: ${region}\n` +
+      `• Sistema de Salud: ${sistema}${isapre}\n` +
+      cargas +
+      `• Interés: ${interes}\n` +
+      `• Costo plan actual: ${costo}\n` +
+      afp +
+      `\nGracias por tu confianza.\nPronto te entregamos tu análisis.`;
+    const url = `https://wa.me/56${telefono.replace(/\D/g, '')}?text=${encodeURIComponent(msg)}`;
+
+    sheet.getRange(lastRow, COLUMN_HEADERS.indexOf('Contacto WA') + 1).setFormula(`=HYPERLINK("${url}"; "Enviar WhatsApp")`);
+
+    // ====== NOTIFICACIÓN AL EQUIPO (email) ======
+    try { notifyTeam_(data, target, lastRow); } catch(err) { Logger.log('notifyTeam_ error: ' + err); }
+
+    // ====== EMAIL AL CLIENTE (ya existente) ======
+    if (data.status !== 'Abandonado' && data.email) {
+      sendConfirmationEmail(data);
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({ result: 'success', sheet: target, message: 'Formulario enviado con éxito.' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    Logger.log("❌ Error en doPost: " + err);
+    return ContentService.createTextOutput(JSON.stringify({ result: 'error', message: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function prepararContactoWhatsApp() {
+  const ui = SpreadsheetApp.getUi();
+  const sh = SpreadsheetApp.getActiveSheet();
+  const sel = sh.getActiveRange();
+  if (sel.getNumRows() > 1 || sel.getRow() < 2) {
+    ui.alert('Selecciona UNA fila válida.');
+    return;
+  }
+
+  const headers = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+  const row = sh.getRange(sel.getRow(), 1, 1, sh.getLastColumn()).getValues()[0];
+  const d = Object.fromEntries(headers.map((h, i) => [h, row[i]]));
+
+  if (d['Estado WA'] === 'Contactado') {
+    ui.alert('Ya fue contactado.');
+    return;
+  }
+
+  const cargasTxt = d['Cargas'] > 0 ? `• Cargas: ${d['Cargas']}\n` : '';
+  const isapreTxt = d['Sist. Salud'] === 'Isapre' && d['Isapre'] ? ` (${d['Isapre']})` : '';
+  const afpTxt = d['Evaluar AFP'] === 'Si' ? `• Me interesa AFP\n• AFP Actual: ${d['AFP']}\n` : '';
+
+  const msg = `Hola, ${d['Nombre']}, te saludamos de PlanesPro:\n\n` +
+    `• Rut: ${d['Rut']}\n` +
+    `• Teléfono: ${d['Teléfono']}\n` +
+    `• Comuna: ${d['Comuna']}\n` +
+    `• Región: ${d['Región']}\n` +
+    `• Sistema de Salud: ${d['Sist. Salud']}${isapreTxt}\n` +
+    cargasTxt +
+    `• Interés: ${d['Interés']}\n` +
+    `• Costo plan actual: ${d['Costo Plan']}\n` +
+    afpTxt +
+    `\nGracias por tu confianza.\nPronto te entregamos tu análisis.`;
+
+  const tel = `56${String(d['Teléfono']).replace(/\D/g, '')}`;
+  const url = `https://wa.me/${tel}?text=${encodeURIComponent(msg)}`;
+  sh.getRange(sel.getRow(), headers.indexOf('Contacto WA') + 1).setFormula(`=HYPERLINK("${url}"; "Enviar WhatsApp")`);
+  sh.getRange(sel.getRow(), headers.indexOf('Estado WA') + 1).setValue('Contactado');
+  ui.alert('✅ Botón de WhatsApp creado y marcado como "Contactado".');
+}
+
+function sendConfirmationEmail(d) {
+  if (!d.email) return;
+  const cargas = d.num_cargas > 0 ? `<p><strong>Cargas:</strong> ${d.num_cargas}</p>` : '';
+  const isapreTxt = d.sistema_actual === 'Isapre' && d.isapre_especifica ? ` (${d.isapre_especifica})` : '';
+  const afpSection = d.evaluar_afp === 'Si'
+    ? `<p><strong>Me interesa AFP</strong><br>AFP Actual: ${d.afp_actual}</p>` : '';
+
+  const html = `
+  <div style="font-family:Arial;max-width:600px;margin:auto">
+    <h2 style="background:#19B471;color:white;padding:10px">PlanesPro</h2>
+    <div style="padding:20px;background:#f9f9f9">
+      <p>Hola <strong>${d.nombre}</strong>,</p>
+      <p>Recibimos tu solicitud. Aquí tus datos:</p>
+      <p><strong>RUT:</strong> ${d.rut}</p>
+      <p><strong>Teléfono:</strong> ${d.telefono}</p>
+      <p><strong>Comuna:</strong> ${d.comuna}</p>
+      <p><strong>Región:</strong> ${d.region}</p>
+      <p><strong>Sistema de Salud:</strong> ${d.sistema_actual}${isapreTxt}</p>
+      ${cargas}
+      <p><strong>Interés:</strong> ${d.interes}</p>
+      <p><strong>Costo plan actual:</strong> ${d.rango_costo}</p>
+      ${afpSection}
+      <p>En breve recibirás tu evaluación.</p>
+      <p>Saludos,<br>Equipo PlanesPro</p>
+    </div>
+    <div style="text-align:center;font-size:12px;color:#555;padding:5px">© ${new Date().getFullYear()} PlanesPro</div>
+  </div>`;
+  MailApp.sendEmail({
+    to: d.email,
+    subject: "Tu análisis de Plan de Salud está en proceso",
+    htmlBody: html,
+    name: "PlanesPro"
+  });
+}
+
+// ====== Notificación al equipo ======
+function notifyTeam_(d, targetSheetName, lastRow) {
+  try {
+    var admin = "planesproisapre@gmail.com";
+    var asunto = "Nuevo lead — " + (targetSheetName || "PlanesPro");
+    var campos = [
+      ["Nombre", d.nombre],
+      ["Email", d.email],
+      ["WhatsApp", d.telefono],
+      ["Rango edad", d.rango_edad],
+      ["Sistema actual", d.sistema_actual || d.isapre_actual || ""],
+      ["Isapre específica", d.isapre_especifica || ""],
+      ["Nº cargas", d.num_cargas],
+      ["Costo plan", d.rango_costo],
+      ["¿Incrementa?", d.Incrementa || d.incrementa || ""],
+      ["Interés", d.interes],
+      ["Fuente CTA", d.fuente_cta],
+      ["Campaña", d.campana],
+      ["Versión", d.version],
+      ["Timestamp", d.timestamp]
+    ];
+    var filas = campos.map(function(kv){
+      return "<tr><td style='padding:6px 10px;border-bottom:1px solid #eee'><b>" + kv[0] + "</b></td><td style='padding:6px 10px;border-bottom:1px solid #eee'>" + (kv[1] || "") + "</td></tr>";
+    }).join("");
+    var html = ""
+      + "<div style='font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;font-size:14px;color:#0b1220'>"
+      + "<h2 style='margin:0 0 10px'>Nuevo lead</h2>"
+      + "<p>Se registró un nuevo lead en la hoja <b>" + (targetSheetName || "") + "</b> (fila #" + (lastRow || "") + ").</p>"
+      + "<table style='border-collapse:collapse;border:1px solid #eee'>" + filas + "</table>"
+      + "<p style='font-size:12px;color:#64748b;margin-top:10px'>Este mensaje fue generado automáticamente por PlanesPro (Apps Script).</p>"
+      + "</div>";
+    MailApp.sendEmail({
+      to: admin,
+      subject: asunto,
+      htmlBody: html,
+      name: "PlanesPro",
+      replyTo: (d.email || "")
+    });
+  } catch (err) {
+    Logger.log("notifyTeam_ failed: " + err);
+  }
+}
+
