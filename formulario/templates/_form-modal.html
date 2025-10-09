@@ -1,0 +1,180 @@
+<div id="formModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content form-modal">
+        <div id="main-form-container">
+            <div class="modal-header">
+                <div class="modal-header-top-row">
+                    <h3 id="modal-title"><i class="fas fa-user-check"></i> Análisis Gratuito</h3>
+                    <button class="modal-close" id="main-close-btn" aria-label="Cerrar formulario"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-line-bg"></div>
+                    <div class="progress-line-fg"></div>
+                    <div class="progress-step active" data-step="1"><div class="progress-step-icon">1</div><div class="progress-step-label">Inicio</div></div>
+                    <div class="progress-step" data-step="2"><div class="progress-step-icon">2</div><div class="progress-step-label">Tu Plan</div></div>
+                    <div class="progress-step" data-step="3"><div class="progress-step-icon">3</div><div class="progress-step-label">Contacto</div></div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <form id="leadForm" class="lead-form-modal" novalidate>
+                    <div class="form-step active" id="step-1">
+                        <p class="form-step-intro">Comencemos por conocerte un poco.</p>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nombre">Nombre Completo *</label>
+                                <input type="text" id="nombre" name="nombre" required autocomplete="name" placeholder="Ej: Javiera González" pattern="[a-zA-ZÀ-ÿ\u00f1\u00d1\s]+" title="El nombre solo debe contener letras y espacios." oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\u00f1\u00d1\s]/g, '')" maxlength="70" aria-describedby="error-nombre">
+                                <div id="error-nombre" class="error-message" aria-live="polite">Solo letras y espacios.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="rut">Rut *</label>
+                                <div class="input-with-icon">
+                                    <input type="text" id="rut" name="rut" required placeholder="12.345.678-9" maxlength="12">
+                                    <i id="rut-validation-icon" data-lucide="check-circle" class="validation-icon"></i>
+                                </div>
+                                <div id="error-rut" class="error-message" aria-live="polite">Ingresa un Rut válido.</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required autocomplete="email" placeholder="tu@email.com" aria-describedby="error-email">
+                                <div id="error-email" class="error-message" aria-live="polite">Ingresa un email válido.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono">WhatsApp *</label>
+                                <div class="phone-input-wrapper">
+                                    <span class="phone-prefix">+56</span>
+                                    <input type="tel" id="telefono" name="telefono" required autocomplete="tel" placeholder="9 8765 4321" pattern="[0-9]{9}" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '')" aria-describedby="error-telefono">
+                                </div>
+                                <div id="error-telefono" class="error-message" aria-live="polite">Número de 9 dígitos.</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="rango_edad">Tu rango de edad *</label>
+                                <select id="rango_edad" name="rango_edad" required aria-describedby="error-rango-edad">
+                                    <option value="" disabled selected>Seleccionar</option>
+                                    <option value="18-25">18 a 25 años</option>
+                                    <option value="26-35">26 a 35 años</option>
+                                    <option value="36-45">36 a 45 años</option>
+                                    <option value="46-55">46 a 55 años</option>
+                                    <option value="56-64">56 a 64 años</option>
+                                    <option value="65+">65 años o más</option>
+                                </select>
+                                <div id="error-rango-edad" class="error-message" aria-live="polite">Este campo es obligatorio.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="estado_civil">Estado Civil *</label>
+                                <select id="estado_civil" name="estado_civil" required>
+                                    <option value="" disabled selected>Seleccionar</option>
+                                    <option value="Soltero">Soltero/a</option>
+                                    <option value="Casado">Casado/a</option>
+                                    <option value="Viudo">Viudo/a</option>
+                                    <option value="Divorciado">Divorciado/a</option>
+                                </select>
+                                <div id="error-estado-civil" class="error-message" aria-live="polite">Este campo es obligatorio.</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="comuna">Comuna *</label>
+                                <input type="text" id="comuna" name="comuna" required autocomplete="off" placeholder="Escribe para buscar tu comuna..." aria-describedby="error-comuna">
+                                <div id="error-comuna" class="error-message" aria-live="polite">Este campo es obligatorio.</div>
+                                </div>
+                            <div class="form-group">
+                                <label for="region">Región</label>
+                                <input type="text" id="region" name="region" readonly placeholder="Automático">
+                            </div>
+                        </div>
+                        <div class="step-navigation"><button type="button" class="cta-btn-primary next-btn">Siguiente <i class="fas fa-arrow-right"></i></button></div>
+                    </div>
+
+                    <div class="form-step" id="step-2">
+                        <p class="form-step-intro">Ahora, cuéntanos sobre tu situación actual.</p>
+                        <div class="form-group">
+                            <label for="sistema_actual">Sistema de Salud Actual *</label>
+                            <select id="sistema_actual" name="sistema_actual" required aria-describedby="error-sistema-actual"><option value="" disabled selected>Selecciona tu sistema</option><option value="Fonasa">Fonasa</option><option value="Isapre">Isapre</option></select>
+                            <div id="error-sistema-actual" class="error-message" aria-live="polite">Este campo es obligatorio.</div>
+                        </div>
+
+                        <div id="isapre-details" class="conditional-isapre-fields">
+                            <div class="form-row form-row--horizontal-mobile">
+                                <div class="form-group">
+                                    <label for="isapre_especifica">¿En qué Isapre estás? *</label>
+                                    <select id="isapre_especifica" name="isapre_especifica" aria-describedby="error-isapre-especifica"><option value="" disabled selected>Selecciona</option><option value="Banmédica">Banmédica</option><option value="Vida Tres">Vida Tres</option><option value="Colmena">Colmena</option><option value="Cruz Blanca">Cruz Blanca</option><option value="Nueva Masvida">Nueva Masvida</option><option value="Consalud">Consalud</option><option value="Otra">Otra</option></select>
+                                    <div id="error-isapre-especifica" class="error-message" aria-live="polite">Este campo es obligatorio.</div>
+                                </div>
+                                <div class="form-group form-group-center"><label>¿Más de 1 año en ella? *</label><div class="radio-group" id="anualidad-isapre-group" role="radiogroup"><label><input type="radio" name="anualidad_isapre" value="Si" required> Sí</label><label><input type="radio" name="anualidad_isapre" value="No"> No</label></div><div class="error-message" aria-live="polite">Debes seleccionar una opción.</div></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="num_cargas">Nº de Cargas Familiares *</label>
+                            <select id="num_cargas" name="num_cargas" required aria-describedby="error-num-cargas"><option value="" disabled selected>Selecciona cantidad</option><option value="0">0 cargas</option><option value="1">1 carga</option><option value="2">2 cargas</option><option value="3">3 cargas</option><option value="4">4 cargas</option><option value="5">5 cargas</option><option value="+5">Más de 5 cargas</option></select>
+                            <div id="error-num-cargas" class="error-message" aria-live="polite">Este campo es obligatorio.</div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="estatura">Estatura (Opcional)</label>
+                                <div class="slider-group">
+                                    <input type="range" id="estatura" min="1.20" max="2.20" step="0.01" value="1.70">
+                                    <span id="estatura-output" class="slider-output">1.70 m</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="peso">Peso Aprox. (Opcional)</label>
+                                <div class="slider-group">
+                                    <input type="range" id="peso" min="35" max="220" step="1" value="70">
+                                    <span id="peso-output" class="slider-output">70 Kg</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-navigation"><button type="button" class="cta-btn-secondary prev-btn"><i class="fas fa-arrow-left"></i> Anterior</button><button type="button" class="cta-btn-primary next-btn">Siguiente <i class="fas fa-arrow-right"></i></button></div>
+                    </div>
+
+                    <div class="form-step" id="step-3">
+                        <p class="form-step-intro">¡Último paso! Ayúdanos a entender qué es lo más importante para ti.</p>
+                        <div class="form-group">
+                            <label for="interes">¿Qué valoras más de un plan de salud? *</label>
+                            <select id="interes" name="interes" required aria-describedby="error-interes"><option value="" disabled selected>Selecciona tu prioridad</option><option value="Copagos bajos">Copagos más bajos</option><option value="Mayor cobertura hospitalaria">Mayor cobertura hospitalaria</option><option value="Acceso a clínicas de mejor nivel">Acceso a clínicas de mejor nivel</option><option value="Cobertura en consultas y exámenes">Cobertura en consultas y exámenes</option><option value="Atención especializada o de urgencia">Atención especializada o de urgencia</option></select>
+                            <div id="error-interes" class="error-message" aria-live="polite">Este campo es obligatorio.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="rango_costo">Costo APROX. de tu plan actual *</label>
+                            <select id="rango_costo" name="rango_costo" required aria-describedby="error-rango-costo"><option value="" disabled selected>Selecciona un rango de precios</option><option value="No lo se">No lo sé</option><option value="<100000">Menos de $100.000</option><option value="100000-150000">$100.000 - $150.000</option><option value="150000-200000">$150.000 - $200.000</option><option value="200000-250000">$200.000 - $250.000</option><option value="250000-300000">$250.000 - $300.000</option><option value="300000-350000">$300.000 - $350.000</option><option value="350000-400000">$350.000 - $400.000</option><option value=">400000">Más de $400.000</option></select>
+                            <div id="error-rango-costo" class="error-message" aria-live="polite">Este campo es obligatorio.</div>
+                        </div>
+
+                        <div class="form-row form-row--horizontal-mobile" id="afp-form-row">
+                            <div class="form-group">
+                                <label>¿Deseas asesoría AFP? *</label>
+                                <div class="radio-group" id="afp-radio-group" role="radiogroup">
+                                    <label><input type="radio" name="evaluar_afp" value="Si" required> Sí</label>
+                                    <label><input type="radio" name="evaluar_afp" value="No"> No</label>
+                                </div>
+                                <div class="error-message" aria-live="polite">Debes seleccionar una opción.</div>
+                            </div>
+                            <div id="afp-details" class="form-group">
+                                <label for="afp_actual">AFP Actual *</label>
+                                <select id="afp_actual" name="afp_actual" aria-describedby="error-afp-actual">
+                                    <option value="" disabled selected>Selecciona</option>
+                                    <option>Capital</option><option>Cuprum</option><option>Habitat</option><option>Modelo</option><option>Planvital</option><option>Provida</option><option>Uno</option>
+                                </select>
+                                <div id="error-afp-actual" class="error-message" aria-live="polite">Este campo es obligatorio.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group"><label for="pdf_file">Adjuntar cartola o documento (PDF, Opcional)</label><div class="file-upload-wrapper"><input type="file" id="pdf_file" name="archivo_pdf" accept=".pdf" class="file-upload-input"><label for="pdf_file" class="file-upload-label"><i class="fas fa-cloud-upload-alt"></i><span>Seleccionar archivo</span></label></div><div id="file-preview" class="file-preview-wrapper hidden"></div><div id="error-pdf_file" class="error-message" aria-live="polite"></div></div>
+                        <div class="step-navigation"><button type="button" class="cta-btn-secondary prev-btn"><i class="fas fa-arrow-left"></i> Anterior</button><button type="submit" class="cta-btn-primary submit-btn"><i class="fas fa-paper-plane"></i> Obtener Análisis</button></div>
+                        <div id="submission-error" class="error-message" aria-live="assertive"></div>
+                    </div>
+                    <input type="hidden" name="servicio" value="Análisis Isapre Personalizado">
+                    <input type="hidden" name="sheetName" value="Soluciones Isapre">
+                    <input type="hidden" id="edad_cargas_hidden" name="edad_cargas">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+/*
+==========================================================
+FORMULARIO - ESTILOS BASE (TEMA CLARO)
+==========================================================
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*
+ * CORRECCIÓN CLAVE:
+ * Se define el color de texto por defecto como oscuro para que sea legible
+ * sobre el nuevo fondo blanco del modal. El color de fondo se elimina
+ * porque ya lo define el modal en sí.
+ */
+body {
+    font-family: var(--font-family);
+    color: var(--text-color-dark); /* Antes: --text-light */
+}
+
+.hidden {
+    display: none !important;
+}

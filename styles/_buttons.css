@@ -1,0 +1,131 @@
+/*
+==========================================================
+FORMULARIO - ESTILOS DE BOTONES (TEMA CLARO/AZUL)
+==========================================================
+*/
+
+.consent-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+/* El texto del "Estoy de acuerdo" ahora es oscuro */
+.consent-group label {
+    font-size: 1rem;
+    color: var(--text-color-dark); 
+    cursor: pointer;
+}
+
+/* El checkbox ahora usa el color primario azul */
+#consent-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+}
+
+.step-navigation, .modal-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.step-navigation {
+    justify-content: space-between;
+}
+
+.modal-actions {
+    justify-content: center;
+}
+
+.cta-btn-primary, .cta-btn-secondary {
+    width: 100%;
+    /* Se ajusta el padding para compensar el nuevo borde */
+    padding: 13px; 
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    /* La clave: un borde invisible que reserva el espacio */
+    border: 1px solid transparent; 
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+}
+
+/* Botón primario ahora usa el azul y texto blanco */
+.cta-btn-primary {
+    background-color: var(--color-primary);
+    color: var(--text-color-light); 
+}
+
+.cta-btn-primary:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+}
+
+/* El botón deshabilitado ahora tiene fondo gris claro y texto gris */
+.cta-btn-primary:disabled {
+    background-color: #e9ecef !important;
+    color: var(--text-color-muted) !important;
+    cursor: not-allowed !important;
+    border: 1px solid var(--border-color) !important;
+    opacity: 0.7;
+}
+
+/* Botón secundario con borde y texto gris oscuro */
+.cta-btn-secondary {
+    background-color: transparent;
+    color: var(--text-color-dark);
+    border: 1px solid var(--border-color);
+}
+
+.cta-btn-secondary:hover {
+    background-color: #e9ecef;
+    color: var(--text-color-dark);
+}
+
+/* Reglas específicas para botones de continuar y finalizar (redundantes pero seguras) */
+#continue-btn:disabled, 
+#finalizar-btn:disabled {
+    background-color: #e9ecef;
+    color: var(--text-color-muted);
+    cursor: not-allowed;
+    border: 1px solid var(--border-color);
+}
+
+#continue-btn:not(:disabled), 
+#finalizar-btn {
+    background-color: var(--color-primary);
+    color: var(--text-color-light);
+    cursor: pointer;
+    border: none;
+}
+
+.step-navigation button.prev-btn {
+    flex-grow: 1;
+}
+.step-navigation button.next-btn,
+.step-navigation button.submit-btn {
+    flex-grow: 2;
+}
+
+.exit-buttons .cta-btn-secondary,
+.exit-buttons .cta-btn-primary {
+    flex: 1;
+}
+
+.modal-actions.is-condensed {
+    justify-content: center;
+}
+
+.modal-actions.is-condensed .cta-btn-primary,
+.modal-actions.is-condensed .cta-btn-secondary {
+    width: auto;
+    flex-grow: 0;
+    padding-left: 30px;
+    padding-right: 30px;
+}

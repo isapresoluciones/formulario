@@ -1,0 +1,12 @@
+/* --- Punto de entrada principal para los estilos --- */
+/* Se importan todos los módulos de CSS en un orden lógico. */
+
+@import url('_variables.css');
+@import url('_base.css');
+@import url('_animations.css');
+@import url('_modal.css');
+@import url('_progress-bar.css');
+@import url('_form.css');
+@import url('_buttons.css');
+@import url('_selection-modal.css');
+@import url('_responsive.css');

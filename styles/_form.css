@@ -1,0 +1,285 @@
+/*
+==================================================================
+ARCHIVO: planespro/formulario/styles/_form.css
+==================================================================
+*/
+
+/* --- 1. ESTRUCTURA Y PASOS DEL FORMULARIO --- */
+
+.lead-form-modal {
+    position: relative;
+}
+
+.form-step {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease-out, visibility 0.4s;
+    padding-bottom: 1rem;
+}
+
+.form-step.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    position: relative;
+}
+
+.form-step-intro {
+    text-align: center;
+    color: var(--text-color-muted);
+    margin-bottom: 25px;
+    padding-top: 15px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 0;
+}
+
+/* ====== INICIO DE LA MODIFICACIÓN: Ajuste de alineación vertical ====== */
+/* ANTERIOR: La alineación `baseline` no funcionaba bien con campos de diferente altura interna (como un radio vs un select). */
+/* NUEVO: Se cambia a `align-items: flex-end`. */
+/* EXPLICACIÓN: Esto alinea los elementos por su parte inferior, lo que visualmente nivela los campos de formulario de manera mucho más efectiva, corrigiendo el problema de alineación de las preguntas de AFP. */
+.form-row--horizontal-mobile {
+    flex-direction: row;
+    gap: 15px;
+    align-items: baseline;
+}
+/* ====== FIN DE LA MODIFICACIÓN ====== */
+
+@media (min-width: 768px) {
+    .form-row {
+        flex-direction: row;
+        gap: 15px;
+        align-items: baseline;
+    }
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+#step-1 .form-group {
+    margin-bottom: 18px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group-center {
+    align-items: center;
+}
+
+
+/* --- 2. ESTILOS GENERALES DE CAMPOS (INPUT, SELECT) --- */
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color-muted);
+    margin-bottom: 8px;
+    white-space: nowrap;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color-dark);
+    font-size: 16px; 
+    font-family: var(--font-family);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:not([type="radio"]):not([type="checkbox"]):focus,
+select:focus {
+    outline: none;
+    border-color: var(--border-focus-color);
+    box-shadow: var(--box-shadow-focus);
+}
+
+.form-group input[readonly] {
+    background-color: #e9ecef;
+    color: var(--text-color-muted);
+    cursor: not-allowed;
+}
+
+input::placeholder { color: #999; font-size: 16px; opacity: 0.8; }
+input::-webkit-input-placeholder { color: #999; font-size: 16px; opacity: 0.8; }
+input::-moz-placeholder          { color: #999; font-size: 16px; opacity: 0.8; }
+input:-ms-input-placeholder      { color: #999; font-size: 16px; opacity: 0.8; }
+input:-moz-placeholder           { color: #999; font-size: 16px; opacity: 0.8; }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-color-dark) !important;
+    -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+
+/* --- 3. ESTILOS PARA TIPOS ESPECÍFICOS DE CAMPOS --- */
+
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236c757d' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 1em;
+}
+
+.phone-input-wrapper { display: flex; align-items: center; }
+.phone-prefix {
+    padding: 12px;
+    background-color: #e9ecef;
+    border: 1px solid var(--border-color);
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    color: var(--text-color-muted);
+    font-size: 16px;
+}
+.phone-input-wrapper input { border-radius: 0 8px 8px 0; }
+.phone-input-wrapper input:focus { z-index: 2; position: relative; }
+
+.radio-group { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 13.5px 10px; border: 1px solid transparent; border-radius: 8px; }
+.radio-group label { display: flex; align-items: center; gap: 8px; color: var(--text-color-dark); cursor: pointer; font-size: 16px; }
+input[type="radio"] { appearance: none; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border-color); background-color: var(--modal-bg); position: relative; cursor: pointer; margin: 0; flex-shrink: 0; transition: border 0.2s; }
+input[type="radio"]:checked { border-color: var(--color-primary); }
+input[type="radio"]:checked::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; border-radius: 50%; background-color: var(--color-primary); }
+input[type="radio"]:focus { outline: none; box-shadow: var(--box-shadow-focus); }
+
+.slider-group { display: flex; align-items: center; gap: 15px; width: 100%; }
+input[type="range"] { -webkit-appearance: none; appearance: none; flex-grow: 1; height: 8px; background: #e9ecef; border-radius: 5px; outline: none; padding: 0; margin: 0; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: var(--color-primary); cursor: pointer; border-radius: 50%; border: 2px solid var(--modal-bg); }
+input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; background: var(--color-primary); cursor: pointer; border-radius: 50%; border: 2px solid var(--modal-bg); }
+.slider-output { background-color: #e9ecef; color: var(--text-color-dark); padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 500; min-width: 80px; text-align: center; white-space: nowrap; }
+
+input[type="file"] { display: none; }
+.file-upload-label { border: 2px dashed var(--border-color); border-radius: 8px; padding: 10px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+.file-upload-label:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.file-preview-wrapper { display: flex; align-items: center; gap: 10px; background-color: #e9ecef; padding: 10px 15px; border-radius: 8px; font-size: 0.9rem; }
+.file-preview-wrapper .fa-file-pdf { color: #e44d26; font-size: 1.5rem; }
+.file-preview-wrapper span { flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.file-preview-wrapper button { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-color-muted); }
+.file-preview-wrapper button:hover { color: var(--text-color-dark); }
+
+.autocomplete-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1001;
+}
+
+.suggestion-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.suggestion-item:hover, .suggestion-item.is-active {
+    background-color: #f0f0f0;
+}
+
+/* --- 4. ESTADOS DE VALIDACIÓN --- */
+
+.form-group.input-error input:not([type="radio"]),
+.form-group.input-error select {
+    border-color: var(--color-danger);
+}
+.form-group.input-error .radio-group { border: 1px solid var(--color-danger); }
+.error-message { color: var(--color-danger); font-size: 0.8rem; overflow: hidden; max-height: 0; opacity: 0; transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.3s ease-in-out; }
+.error-message.visible { margin-top: 5px; max-height: 2rem; opacity: 1; }
+
+
+/* --- 5. LÓGICA DE VISIBILIDAD (CAMPOS CONDICIONALES) --- */
+
+.conditional-isapre-fields,
+#afp-details {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out, margin-top 0.4s ease-in-out;
+    pointer-events: none;
+    margin-top: 0;
+}
+.conditional-isapre-fields.is-visible,
+#afp-details.is-visible {
+    max-height: 500px;
+    opacity: 1;
+    pointer-events: auto;
+    margin-top: 22px;
+}
+
+/* --- Estilos para Feedback de subida de PDF --- */
+.file-preview-wrapper .fa-check-circle {
+  color: #25D366; /* Verde éxito */
+  font-size: 1.5rem;
+  opacity: 0;
+  animation: fadeInCheck 0.5s ease forwards;
+}
+@keyframes fadeInCheck {
+  to { opacity: 1; }
+}
+
+.input-with-icon {
+  position: relative;
+}
+.validation-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+}
+.validation-icon.valid::before {
+  content: '✓';
+  color: #25D366;
+}
+.validation-icon.invalid::before {
+  content: '✗';
+  color: var(--color-danger);
+}
+
+/* --- Estilos para Validación de RUT en Tiempo Real --- */
+.input-with-icon {
+  position: relative;
+}
+.validation-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #25D366; /* Verde éxito */
+  opacity: 0; /* Oculto por defecto */
+  transition: opacity 0.3s ease-in-out;
+}
+.validation-icon.is-visible {
+  opacity: 1; /* Se hace visible con esta clase */
+}

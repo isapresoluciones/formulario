@@ -1,0 +1,42 @@
+/* Se elimina la clase .form-row-no-wrap porque ahora todas las filas son horizontales por defecto */
+
+/* La media query solo ajusta el espaciado para pantallas más grandes,
+   ya que la dirección de la fila es manejada por el estilo base en _form.css */
+@media (min-width: 768px) { 
+    .form-row { 
+        gap: 20px; 
+    } 
+}
+
+/* Los ajustes para pantallas muy pequeñas se mantienen para mejorar la legibilidad */
+@media (max-width: 480px) {
+    .modal-body {
+        padding: 20px;
+    }
+    .modal-header h3 {
+        font-size: 1.1rem;
+    }
+    .form-group {
+        margin-bottom: 18px;
+    }
+    /* Podríamos añadir más reglas aquí si fuera necesario para ajustar
+       el tamaño de fuente en las etiquetas para evitar que se compriman demasiado */
+    .form-group label {
+        font-size: 0.85rem; /* Un poco más pequeño para dar espacio */
+    }
+    .cta-btn-primary, .cta-btn-secondary {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+    .progress-step-icon {
+        width: 35px;
+        height: 35px;
+        border-width: 3px;
+    }
+    .progress-line-bg, .progress-line-fg {
+        top: 17.5px;
+    }
+    .progress-step-label {
+        font-size: 0.7rem;
+    }
+}

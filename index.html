@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Personalizado</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/styles.css?v=2.9">
+</head>
+<body>
+
+    <div id="welcome-modal-placeholder"></div>
+    <div id="form-modal-placeholder"></div>
+    <div id="thank-you-modal-placeholder"></div>
+    <div id="isapre-warning-modal-placeholder"></div>
+    <div id="exit-confirm-modal-placeholder"></div>
+    <div id="pdf-warning-modal-placeholder"></div>
+
+    <div id="standalone-exit" style="position:fixed; inset:0; display:none; place-items:center; background:#0b0b0b; z-index:10001;">
+        <div style="background:#111827; color:#e5e7eb; border:1px solid #1f2937; border-radius:14px; padding:28px 24px; width:min(92vw,460px); text-align:center;">
+            <h3 style="margin:0 0 6px; font-weight:700; color:#f3f4f6;">¡Gracias por tu tiempo!</h3>
+            <p style="margin:0; color:#cbd5e1;">Hemos recibido tu información. Ya puedes cerrar esta pestaña.</p>
+        </div>
+    </div>
+    
+    <div id="recovery-screen" style="position:fixed; inset:0; display:none; place-items:center; background:#0b0b0b; z-index:10000; text-align: center; padding: 20px;">
+        <div style="max-width: 450px; margin: auto;">
+            <h3 style="color: #f3f4f6; font-weight: 700; margin-bottom: 10px;"><i class="fa-solid fa-sack-dollar"></i>  Tu bienestar tiene una recompensa.</h3>
+            <p style="color: #cbd5e1; margin-bottom: 30px; line-height: 1.6;">
+                Dar este paso hacia tu bienestar tiene premio. Finaliza tu análisis y, como nuevo cliente, accederás a un beneficio exclusivo que tenemos reservado para ti.
+            </p>
+            <div style="max-width: 300px; margin: auto;">
+                <button id="recover-restart-btn" class="cta-btn-primary">Iniciar mi análisis</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./js/main.js?v=2.9"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+</body>
+</html>

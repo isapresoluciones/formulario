@@ -1,0 +1,84 @@
+/*
+==========================================================
+FORMULARIO - BARRA DE PROGRESO (TEMA CLARO/AZUL)
+==========================================================
+*/
+
+.modal-header .progress-bar {
+    width: 100%;
+    margin: 12px 0 0 0;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    width: 80px;
+}
+
+.progress-step-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    /* CORRECCIÓN: El fondo del ícono es blanco y el borde es gris claro por defecto */
+    background-color: var(--modal-bg);
+    border: 3px solid var(--border-color);
+    color: var(--text-color-muted);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    transition: all 0.4s ease;
+}
+
+.progress-step-label {
+    font-size: 0.75rem;
+    color: var(--text-color-muted);
+    margin-top: 6px;
+    transition: color 0.4s ease;
+}
+
+/* CORRECCIÓN: El paso activo ahora tiene borde azul y el texto de abajo también es azul */
+.progress-step.active .progress-step-icon {
+    border-color: var(--color-primary);
+}
+
+.progress-step.active .progress-step-label {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.progress-line-bg,
+.progress-line-fg {
+    position: absolute;
+    top: 17.5px;
+    height: 4px;
+    transform: translateY(-50%);
+    left: 0;
+}
+
+/* CORRECCIÓN: La línea de fondo ahora es un gris claro visible */
+.progress-line-bg {
+    background-color: var(--border-color);
+    width: 100%;
+    z-index: 1;
+}
+
+/* CORRECCIÓN: La línea de progreso ahora es azul */
+.progress-line-fg {
+    background-color: var(--color-primary);
+    width: 0;
+    z-index: 2;
+    transition: width 0.4s ease-in-out;
+}
+
+.progress-step.completed {
+  cursor: pointer;
+}

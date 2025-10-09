@@ -1,0 +1,285 @@
+/*
+==================================================================
+ARCHIVO: planespro/formulario/styles/_modal.css
+==================================================================
+*/
+
+/* --- Estilo Base (Mobile First) --- */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: none; 
+    justify-content: center;
+    padding: 0; 
+}
+
+.modal.is-visible {
+    display: flex;
+    animation: fade-in 0.3s ease-out; 
+}
+
+.modal-content {
+    background-color: var(--modal-bg);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    animation: none;
+    border-radius: 0;
+    box-shadow: none;
+    max-height: 100vh; 
+}
+
+#main-form-container, #thank-you-step, #welcome-step {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0; 
+}
+
+.modal-header {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 20px 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+    position: relative;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.modal-header-top-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.modal-header.scrolled {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.modal-header h3 { 
+    font-size: 1.1rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 2rem;
+    text-align: center;
+    width: 100%;
+}
+.modal-header h3 .fas { margin-right: 10px; color: var(--color-primary); }
+
+.modal-header .modal-close {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none; color: var(--text-color-muted);
+    font-size: 1.5rem; cursor: pointer; transition: color 0.2s;
+    padding: 5px;
+}
+.modal-header .modal-close:hover { color: var(--text-color-dark); }
+
+.modal-body { 
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-grow: 1;
+    -webkit-overflow-scrolling: touch;
+}
+
+.modal-body::-webkit-scrollbar { display: none; }
+.modal-body { -ms-overflow-style: none; scrollbar-width: none; }
+
+#welcome-step, #thank-you-step {
+    padding: 25px;
+    text-align: center;
+    justify-content: center;
+}
+
+.welcome-text { color: var(--text-color-muted); font-size: 1rem; line-height: 1.6; margin-bottom: 25px; }
+.thank-you-icon { font-size: 3.5rem; color: var(--color-primary); margin-bottom: 1.5rem; }
+
+/* ====== INICIO DE LA MODIFICACIÓN: Estilos para modales de advertencia (Reforzado) ====== */
+/* ANTERIOR: La regla no era lo suficientemente específica. */
+/* NUEVO: Se añade una regla más fuerte para forzar el comportamiento flotante. */
+/* EXPLICACIÓN: Se asegura que cualquier modal con la clase .warning-modal se centre y que su contenido no ocupe toda la altura de la pantalla, garantizando que se vea como una ventana emergente. */
+
+.modal.warning-modal,
+.modal:has(.warning-modal) {
+    align-items: center; 
+    padding: 15px;
+}
+
+.warning-modal .modal-content {
+    width: 100%;
+    max-width: 500px;
+    height: auto !important; /* Forzamos la altura automática */
+    max-height: 90vh;
+    border-radius: 16px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); 
+    animation: slide-down 0.3s ease-out; 
+}
+
+.warning-modal .modal-body { 
+    text-align: center; 
+}
+.warning-modal p { 
+    font-size: 1.1rem; 
+    line-height: 1.6; 
+    color: var(--text-color-dark); 
+    margin-bottom: 25px; 
+}
+/* ====== FIN DE LA MODIFICACIÓN ====== */
+
+
+/* --- Media Query para Escritorio --- */
+@media (min-width: 768px) {
+    .modal {
+        padding: 15px;
+        align-items: center; 
+    }
+
+    .modal-content {
+        width: 100%;
+        max-width: 750px;
+        height: auto;
+        max-height: 90vh;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        animation: slide-down 0.3s ease-out;
+    }
+
+    .modal-header {
+        padding: 15px 25px 15px 25px;
+    }
+
+    .modal-body {
+        padding: 25px;
+    }
+
+    .modal-header h3 {
+        font-size: 1.15rem;
+        padding: 0 2.5rem;
+    }
+}
+
+/* Animaciones */
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slide-down { 
+    from { 
+        transform: translateY(-30px); 
+        opacity: 0; 
+    } 
+    to { 
+        transform: translateY(0); 
+        opacity: 1; 
+    } 
+}
+
+/* --- INICIO: Estilos para Thank You Modal --- */
+/* --- INICIO: Estilos para Thank You Modal --- */
+
+#thankyou-modal .modal-header h3 i {
+  color: var(--color-primary);
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+#thankyou-modal .modal-body {
+  text-align: center;
+  padding: 15px 25px 25px; /* Espaciado ajustado */
+}
+
+.thankyou-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e9ecef;
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 15px auto 20px;
+}
+
+.thankyou-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-color-dark);
+  margin-bottom: 25px;
+  margin-top: 0;
+}
+
+.thankyou-whatsapp-btn {
+  background-color: #25D366 !important; /* Verde WhatsApp */
+  width: 100%;
+  font-weight: 600;
+  margin-bottom: 25px;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
+}
+
+.thankyou-whatsapp-btn:hover {
+  background-color: #20b857 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+}
+
+.thankyou-whatsapp-btn .fab {
+  font-size: 1.3rem; /* Ícono más grande */
+  margin-right: 10px;
+}
+
+.thankyou-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid var(--border-color);
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-color-muted);
+  text-align: left;
+}
+
+.thankyou-note .fa-info-circle {
+  color: var(--color-primary);
+  margin-top: 3px;
+  font-size: 1rem;
+}
+
+.thankyou-backup {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  color: var(--text-color-muted);
+}
+
+.thankyou-backup a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.thankyou-tooltip {
+  margin-left: 8px;
+  font-size: 0.85rem;
+  color: #25D366;
+  opacity: 0;
+  transition: opacity .2s ease;
+  font-weight: bold;
+}
+
+/* --- FIN: Estilos para Thank You Modal --- */

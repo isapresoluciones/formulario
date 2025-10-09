@@ -1,0 +1,24 @@
+/*
+==================================================================
+ARCHIVO: planespro/formulario/styles/_selection-modal.css
+==================================================================
+*/
+
+/* ====== INICIO DE LA MODIFICACIÓN: Eliminación de estilos obsoletos ====== */
+
+/* ANTERIOR:
+Este archivo contenía todos los estilos para el modal de selección en móviles,
+incluyendo la media query que causaba el problema de la "franja blanca" en escritorio.
+*/
+
+/* NUEVO:
+El archivo ha sido vaciado completamente.
+*/
+
+/* EXPLICACIÓN:
+Dado que el elemento #selectionModal fue eliminado del HTML, este archivo de estilos
+ya no es necesario. Mantenerlo vacío es la forma más limpia y segura de
+asegurar que ninguna de sus antiguas reglas afecte nuestro nuevo diseño.
+*/
+
+/* ====== FIN DE LA MODIFICACIÓN ====== */

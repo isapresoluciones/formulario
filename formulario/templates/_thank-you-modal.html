@@ -1,0 +1,35 @@
+<div id="thankyou-modal" class="modal warning-modal" role="dialog" aria-modal="true" aria-labelledby="thankyou-modal-title">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="thankyou-modal-title"><i class="fas fa-paper-plane"></i> Enviando...</h3>
+    </div>
+
+    <div class="modal-body">
+      <div id="thankyou-processing">
+        <div class="thankyou-spinner"></div>
+        <p class="thankyou-text">Estamos procesando tu información. <br>Por favor, espera unos segundos.</p>
+      </div>
+
+      <div id="thankyou-success" style="display:none;">
+        <p class="thankyou-text"><strong>¡Excelente! Tu solicitud fue enviada.</strong><br>El siguiente paso es hablar con un asesor.</p>
+        <a id="thankyou-wa-btn" class="cta-btn-primary thankyou-whatsapp-btn" href="#" target="_blank" rel="noopener">
+          <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+        </a>
+        <div class="thankyou-note">
+          <i class="fas fa-info-circle"></i>
+          <div>
+            <strong>Nota: </strong>El mensaje incluye tu información. No modificar.
+          </div>
+        </div>
+        <p class="thankyou-backup">
+          ¿No funcionó? Copia los datos <a href="#" id="thankyou-copy-link">aquí</a> y compártelos al WhatsApp <strong>+56 9 6731 3656</strong>.
+          <span id="thankyou-tooltip" class="thankyou-tooltip"></span>
+        </p>
+
+        <div class="modal-actions is-condensed">
+            <button class="cta-btn-primary" type="button" data-close-modal>Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

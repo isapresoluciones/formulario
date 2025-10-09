@@ -1,0 +1,36 @@
+/*
+==========================================================
+FORMULARIO - VARIABLES DE ESTILO (TEMA CLARO INTEGRADO)
+==========================================================
+*/
+
+:root {
+    /* --- Paleta de Colores (Tema Claro / Azul) --- */
+    /* Ajustada para coincidir con la estética de la página principal */
+
+    /* Colores de Acción (Botones, links, etc.) */
+    --color-primary: #0d6efd;           /* Azul principal (tomado de los botones CTA del sitio) */
+    --color-primary-hover: #0b5ed7;     /* Azul más oscuro para el efecto hover */
+    --color-secondary: #6c757d;          /* Gris para textos secundarios */
+    --color-danger: #dc3545;            /* Rojo para errores */
+    
+    /* Colores de Fondo */
+    --modal-bg: #ffffff;                /* Fondo del modal: Gris oscuro -> Blanco */
+    --input-bg: #ffffff;                /* Fondo de los campos de texto: Gris oscuro -> Blanco */
+    --input-focus-bg: #ffffff;          /* Fondo de campos al hacer foco */
+
+    /* Colores de Texto */
+    --text-color-light: #ffffff;        /* Texto claro (para usar sobre los botones azules) */
+    --text-color-dark: #212529;         /* Texto oscuro (será el principal sobre el fondo blanco) */
+    --text-color-muted: #6c757d;        /* Texto para placeholders o ayudas */
+
+    /* Colores de Bordes */
+    --border-color: #dee2e6;            /* Borde de campos: Gris -> Gris más claro */
+    --border-focus-color: #86b7fe;      /* Borde azul al hacer foco */
+    
+    /* Tipografía */
+    --font-family: 'Poppins', sans-serif;
+
+    /* Otros */
+    --box-shadow-focus: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
