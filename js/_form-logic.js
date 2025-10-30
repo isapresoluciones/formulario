@@ -40,8 +40,8 @@ export function checkRecoveryStatus() {
 
 // --- Constantes ---
 const FACTOR_POR_EDAD = {
-  "18-25": "0.9", "26-35": "1.0", "36-45": "1.3",
-  "46-55": "1.4", "56-64": "2.0", "65+": "2.4"
+  "20-24": "0.9", "25-34": "1.0", "35-44": "1.3",
+  "45-54": "1.4", "55-64": "2.0", "65+": "2.4"
 };
 
 // --- Funciones auxiliares para el modal de "Gracias" ---
@@ -752,4 +752,5 @@ export function initFormSubmission() {
         }
         performSubmission();
     });
+
 }
