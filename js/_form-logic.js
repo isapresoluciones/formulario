@@ -427,7 +427,7 @@ export function initDynamicFields() {
         if (target.closest('#anualidad-isapre-group') && target.value === 'No') {
             const isapreName = document.getElementById('isapre_especifica').value;
             if (isapreName) {
-                const msg = isapreName === 'Otra' ? `Recuerde que debe tener al menos un año en "Tu Isapre actual".` : `Recuerde que debe tener al menos un año en "${isapreName}".`;
+                const msg = isapreName === 'Otra' ? `Recuerde que debe tener al menos un año en "Tu Isapre actual".` : `Recuerde que debe tener al menos un año en ${isapreName}.`;
                 const warningText = document.getElementById('isapre-warning-text');
                 if(warningText) warningText.textContent = msg;
                 openModal('isapreWarningModal');
@@ -754,3 +754,4 @@ export function initFormSubmission() {
     });
 
 }
+
